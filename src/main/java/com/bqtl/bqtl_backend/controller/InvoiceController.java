@@ -1,54 +1,50 @@
 package com.bqtl.bqtl_backend.controller;
 
-import com.bqtl.bqtl_backend.dto.InvoiceRequest;
-
 import com.bqtl.bqtl_backend.entity.Invoice;
 
-import com.bqtl.bqtl_backend.service.InvoiceService;
+import com.bqtl.bqtl_backend.repository.InvoiceRepository;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
+
 @RequestMapping("/invoices")
 
-@RequiredArgsConstructor
+@CrossOrigin("*")
 
 public class InvoiceController {
 
-    private final InvoiceService service;
+    @Autowired
 
-    @PostMapping("/create")
-
-    public Invoice create(
-
-            @RequestBody
-            InvoiceRequest request
-
-    ) {
-
-        return service.create(request);
-    }
+    private InvoiceRepository repository;
 
     @GetMapping
 
-    public List<Invoice> getAll() {
+    public ResponseEntity<List<Invoice>> getInvoices() {
 
-        return service.getAll();
+        return ResponseEntity.ok(
+                repository.findAll()
+        );
     }
 
-    @GetMapping("/{id}")
+    @PostMapping
 
-    public Invoice getById(
+    public ResponseEntity<?> createInvoice(
 
-            @PathVariable UUID id
+            @RequestBody Invoice invoice
 
     ) {
 
-        return service.getById(id);
+        repository.save(invoice);
+
+        return ResponseEntity.ok(
+                "Invoice Created"
+        );
     }
 }

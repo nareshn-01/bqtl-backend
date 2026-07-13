@@ -34,4 +34,10 @@ public class TestReport {
     @JoinColumn(name = "sample_request_id")
 
     private SampleRequest sampleRequest;
+
+    public void setFileUrl(String filePath) {
+    }
+
+    public void setIssuedAt(LocalDateTime now) {
+    }
 }
